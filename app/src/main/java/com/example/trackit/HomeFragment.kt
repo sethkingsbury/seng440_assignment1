@@ -1,7 +1,9 @@
 package com.example.trackit
 
 import android.annotation.SuppressLint
+import android.app.*
 import android.content.*
+import android.content.Context.NOTIFICATION_SERVICE
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -13,8 +15,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentHostCallback
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.navigation.fragment.findNavController
-import com.example.trackit.model.LogItem
-import com.example.trackit.model.Project
+import com.example.trackit.model.*
 import com.example.trackit.service.TimerService
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -36,6 +37,13 @@ class HomeFragment : Fragment() {
     private var time = 0.0
 
     private lateinit var timeText : TextView
+
+    lateinit var notificationManager: NotificationManager
+    lateinit var notificationChannel: NotificationChannel
+    lateinit var builder: Notification.Builder
+    private val channelId = "i.apps.notifications"
+    private val description = "Test notification"
+    private val notified = false
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
@@ -92,7 +100,7 @@ class HomeFragment : Fragment() {
                 end = LocalDateTime.now().toString()
                 startStopButton.text = resources.getString(R.string.start)
                 var logTimes = getLogTimes(sharedPreferences)
-                logTimes.add(LogItem(selectedProject, start, end))
+                logTimes.addFirst(LogItem(selectedProject, start, end))
                 logTime(sharedPreferences, logTimes)
             }
         }
@@ -138,13 +146,14 @@ class HomeFragment : Fragment() {
         var jsonProject = sp?.getString("project_list", "")
         val projectType = object : TypeToken<ArrayList<Project>>(){}.type
         if (jsonProject == "") {
-            jsonProject = "[{\"name\" : \"My First Project\"}]"
+            val defaultProject = resources.getString(R.string.defaultProject)
+            jsonProject = "[{\"name\" : \"$defaultProject\"}]"
             val editor = sp?.edit()
             editor?.putString("project_list", jsonProject)
             editor?.apply()
         }
 
-        var projects = gson.fromJson<ArrayList<Project>>(jsonProject, projectType).toList()
+        val projects = gson.fromJson<ArrayList<Project>>(jsonProject, projectType).toList()
         val projectStrings = arrayListOf<String>()
         for (project in projects) {
             projectStrings.add(project.name)
@@ -153,18 +162,18 @@ class HomeFragment : Fragment() {
         return projectStrings
     }
 
-    private fun getLogTimes(sp : SharedPreferences?) : ArrayList<LogItem> {
+    private fun getLogTimes(sp : SharedPreferences?) : ArrayDeque<LogItem> {
         val jsonLog = sp?.getString("log_list", "")
-        val logType = object : TypeToken<ArrayList<LogItem>>(){}.type
-        var logTimes = gson.fromJson<ArrayList<LogItem>>(jsonLog, logType)
+        val logType = object : TypeToken<ArrayDeque<LogItem>>(){}.type
+        var logTimes = gson.fromJson<ArrayDeque<LogItem>>(jsonLog, logType)
         if (logTimes == null) {
-            logTimes = arrayListOf()
+            logTimes = ArrayDeque()
         }
         return logTimes
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    fun logTime(sp : SharedPreferences?,logTimes : ArrayList<LogItem>) {
+    fun logTime(sp : SharedPreferences?,logTimes : ArrayDeque<LogItem>) {
         val editor = sp?.edit()
         val jsonString = gson.toJson(logTimes)
         editor?.putString("log_list", jsonString)
