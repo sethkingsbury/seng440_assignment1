@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Track It</string>
+    <string name="selected_item">Selected item:</string>
+    <string name="no_selected_item">Please select a project</string>
+</resources>
