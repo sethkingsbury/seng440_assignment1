@@ -1,8 +1,7 @@
 package com.example.trackit
 
 import android.annotation.SuppressLint
-import android.content.Context
-import android.content.SharedPreferences
+import android.content.*
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,12 +10,16 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentHostCallback
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.navigation.fragment.findNavController
 import com.example.trackit.model.LogItem
 import com.example.trackit.model.Project
+import com.example.trackit.service.TimerService
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import java.time.LocalDateTime
+import kotlin.math.roundToInt
 
 
 class HomeFragment : Fragment() {
@@ -28,6 +31,11 @@ class HomeFragment : Fragment() {
     private var end : String = LocalDateTime.now().toString()
     private var selectedProject : String = ""
 
+    private var timerStarted = false
+    private lateinit var serviceIntent: Intent
+    private var time = 0.0
+
+    private lateinit var timeText : TextView
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
@@ -46,7 +54,7 @@ class HomeFragment : Fragment() {
         logsButton.setOnClickListener {
             findNavController().navigate(R.id.action_homeFragment_to_logFragment)
         }
-        println("#######################HERE WE RRRRRR##########################")
+
         val sharedPreferences = this.activity?.getSharedPreferences("pref", Context.MODE_PRIVATE)
 //        clearAllSharedPreferences(sharedPreferences)
         val projectStrings = getProjects(sharedPreferences)
@@ -76,23 +84,57 @@ class HomeFragment : Fragment() {
         val startStopButton = view.findViewById<Button>(R.id.startStopButton)
         startStopButton.setOnClickListener {
             if (startStopButton.text == "start") {
+                startTimer()
                 start = LocalDateTime.now().toString()
                 startStopButton.text = "stop"
             } else {
+                stopTimer()
                 end = LocalDateTime.now().toString()
                 startStopButton.text = "start"
                 var logTimes = getLogTimes(sharedPreferences)
-                println(logTimes.size)
                 logTimes.add(LogItem(selectedProject, start, end))
                 logTime(sharedPreferences, logTimes)
             }
         }
 
+//        Visual Timer Code
+        timeText = view.findViewById(R.id.timeText)
+        serviceIntent = Intent(this.context, TimerService::class.java)
+        this.activity?.registerReceiver(updateTime, IntentFilter(TimerService.TIMER_UPDATED))
+        this.activity?.let { LocalBroadcastManager.getInstance(it).registerReceiver(updateTime,  IntentFilter(TimerService.TIMER_UPDATED)) };
+
         return view
     }
 
+    private fun startTimer() {
+        serviceIntent.putExtra(TimerService.TIME_EXTRA, time)
+        this.activity?.startService(serviceIntent)
+        timerStarted = true
+    }
+
+    private fun stopTimer() {
+        this.activity?.stopService(serviceIntent)
+        timerStarted = false
+        time = 0.0
+        timeText.text = getTimeStringFromDouble(time)
+    }
+
+    private val updateTime: BroadcastReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context?, intent: Intent) {
+            time = intent.getDoubleExtra(TimerService.TIME_EXTRA, 0.0)
+            timeText.text = getTimeStringFromDouble(time)
+        }
+    }
+
+    private fun getTimeStringFromDouble(time: Double): String {
+        val resultInt = time.roundToInt()
+        val h = resultInt % 86400 / 3600
+        val m = resultInt % 86400 % 3600 / 60
+        val s = resultInt % 86400 % 3600 % 60
+        return String.format("%02d:%02d:%02d", h, m, s)
+    }
+
     private fun getProjects(sp : SharedPreferences?) : ArrayList<String> {
-        println("#######################HERE WE RRRRRR##########################")
         var jsonProject = sp?.getString("project_list", "")
         val projectType = object : TypeToken<ArrayList<Project>>(){}.type
         if (jsonProject == "") {
