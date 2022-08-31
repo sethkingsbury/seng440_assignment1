@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:gravity="center_horizontal"
     android:orientation="vertical"
     tools:context=".HomeFragment">
 
@@ -38,8 +39,8 @@
         android:id="@+id/timeText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="20dp"
-        android:paddingBottom="20dp"
+        android:paddingTop="30dp"
+        android:paddingBottom="30dp"
         android:text="@string/defaultTime"
         android:textAlignment="center"
         android:textColor="@color/black"
@@ -49,13 +50,14 @@
 
     <Button
         android:id="@+id/startStopButton"
-        android:layout_width="match_parent"
+        android:layout_width="186dp"
         android:layout_height="wrap_content"
-        android:text="@string/start" />
+        android:text="@string/start"
+        android:textAlignment="center" />
 
     <Button
         android:id="@+id/toLogsButton"
-        android:layout_width="match_parent"
+        android:layout_width="185dp"
         android:layout_height="wrap_content"
         android:text="@string/logs"
         app:layout_constraintBottom_toBottomOf="parent"

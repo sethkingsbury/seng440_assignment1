@@ -21,22 +21,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-<!--        <Button-->
-<!--            android:id="@+id/deleteProjectButton"-->
-<!--            android:layout_width="60dp"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:backgroundTint="?attr/colorError"-->
-<!--            android:insetTop="0dp"-->
-<!--            android:insetBottom="0dp"-->
-<!--            android:textAlignment="textStart"-->
-<!--            app:icon="@android:drawable/ic_delete"-->
-<!--            app:iconPadding="0px"-->
-<!--            app:iconSize="30dp"-->
-<!--            app:layout_constraintBottom_toBottomOf="parent"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            app:layout_constraintTop_toTopOf="parent"-->
-<!--            tools:ignore="SpeakableTextPresentCheck" />-->
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </com.google.android.material.card.MaterialCardView>
