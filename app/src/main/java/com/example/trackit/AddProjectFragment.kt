@@ -30,13 +30,13 @@ class AddProjectFragment : Fragment() {
         val projectName = view.findViewById<TextInputEditText>(R.id.projectName)
 
         button.setOnClickListener {
-            var sp = this.activity?.getSharedPreferences("pref", Context.MODE_PRIVATE)
-            var editor = sp?.edit()
+            val sp = this.activity?.getSharedPreferences("pref", Context.MODE_PRIVATE)
+            val editor = sp?.edit()
 
             val jsonProject = sp?.getString("project_list", "")
             val projectType = object : TypeToken<ArrayList<Project>>(){}.type
             val projects = gson.fromJson<ArrayList<Project>>(jsonProject, projectType)
-            var project = Project(projectName.text.toString())
+            val project = Project(projectName.text.toString())
             projects.add(project)
             val jsonString = gson.toJson(projects)
             editor?.putString("project_list", jsonString)
