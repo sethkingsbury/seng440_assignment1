@@ -41,6 +41,11 @@ class ProjectFragment : Fragment() {
         recyclerView.adapter = this.context?.let { ProjectItemAdapter(it, projects) }
         recyclerView.setHasFixedSize(true)
 
+        val backButton = view.findViewById<Button>(R.id.projectsBackButton)
+        backButton.setOnClickListener {
+            findNavController().navigate(R.id.action_projectFragment_to_homeFragment)
+        }
+
         return view
     }
 
