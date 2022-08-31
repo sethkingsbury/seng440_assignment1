@@ -2,4 +2,16 @@
     <string name="app_name">Track It</string>
     <string name="selected_item">Selected item:</string>
     <string name="no_selected_item">Please select a project</string>
+    <string name="start">START</string>
+    <string name="stop">STOP</string>
+    <string name="logs">LOGS</string>
+    <string name="back">BACK</string>
+    <string name="add">ADD</string>
+    <string name="projects">Projects</string>
+    <string name="defaultTime">00:00:00</string>
+    <string name="time_logged">Time Logged</string>
+    <string name="defaultProject">defaultProject</string>
+    <string name="defaultTimeDiff">00:00:00 – 00:00:00</string>
+    <string name="project_name">project name</string>
+    <string name="add_project">Add Project</string>
 </resources>

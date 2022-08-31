@@ -83,14 +83,14 @@ class HomeFragment : Fragment() {
 
         val startStopButton = view.findViewById<Button>(R.id.startStopButton)
         startStopButton.setOnClickListener {
-            if (startStopButton.text == "start") {
+            if (startStopButton.text == resources.getString(R.string.start)) {
                 startTimer()
                 start = LocalDateTime.now().toString()
-                startStopButton.text = "stop"
+                startStopButton.text = resources.getString(R.string.stop)
             } else {
                 stopTimer()
                 end = LocalDateTime.now().toString()
-                startStopButton.text = "start"
+                startStopButton.text = resources.getString(R.string.start)
                 var logTimes = getLogTimes(sharedPreferences)
                 logTimes.add(LogItem(selectedProject, start, end))
                 logTime(sharedPreferences, logTimes)

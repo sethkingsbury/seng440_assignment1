@@ -23,9 +23,7 @@ class AddProjectFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_add_project, container, false)
-
         val button = view.findViewById<Button>(R.id.addProjectButton)
         val projectName = view.findViewById<TextInputEditText>(R.id.projectName)
 

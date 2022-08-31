@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Track It</string>
+    <string name="selected_item">Item seleccionado:</string>
+    <string name="no_selected_item">Seleccione un proyecto</string>
+    <string name="start">comienzo</string>
+    <string name="stop">deténgase</string>
+    <string name="logs">registros</string>
+    <string name="back">espalda</string>
+    <string name="add">agregar</string>
+    <string name="projects">Proyectos</string>
+    <string name="defaultTime">00:00:00</string>
+    <string name="time_logged">Tiempo registrado</string>
+    <string name="defaultProject">defecto</string>
+    <string name="defaultTimeDiff">00:00:00 – 00:00:00</string>
+    <string name="project_name">proyecto nombre</string>
+    <string name="add_project">agregar proyecto</string>
+</resources>
