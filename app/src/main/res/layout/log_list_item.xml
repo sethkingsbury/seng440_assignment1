@@ -15,6 +15,7 @@
             android:id="@+id/log_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:maxLength="20"
             android:padding="16dp"
             android:text="COSC441"
             android:textAppearance="?attr/textAppearanceHeadline6"
